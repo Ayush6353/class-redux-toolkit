@@ -9,11 +9,12 @@ const SliceData = createSlice({
       return [...state, action.payload];
     },
     removedata(state, action) {
-      console.log(action.payload.record.id, "ididididdi");
+      // console.log(action.payload.record.id, "ididididdi");
       return state.filter((fData) => action.payload.record.id !== fData.id);
     },
     updatedata(state, action) {
       state.map((fData) => {
+        console.log(action.payload,"idididdid")
         if (fData.id === action.payload.id) {
           fData.email = action.payload.email;
           fData.password = action.payload.password;

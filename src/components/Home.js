@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Button, Form, Input } from "antd";
 import { Space, Table } from "antd";
 import { connect } from "react-redux";
-import { adddata, removedata } from "../Store/SliceData";
+import { adddata, removedata, updatedata } from "../Store/SliceData";
 const { Column } = Table;
 
 class Home extends Component {
@@ -11,20 +11,35 @@ class Home extends Component {
     this.formRef = React.createRef();
     this.state = {
       userdata: [],
-      formData: {
-        email: "",
-        password: "",
-      },
-      allfachData: "",
-      editindex: -1,
+      eid: "",
+      Editbtn: true,
     };
   }
+
   render() {
     const onFinish = (values) => {
       const newdata = this.props.users.length;
-      console.log("Success:", values);
-      this.props.adddata(newdata, values.email, values.password);
-      this.formRef.current?.resetFields();
+
+      const eidd = this.state.eid;
+      console.log("Success:", eidd);
+
+      if (!this.state.Editbtn) {
+        console.log(eidd, "Please eidd");
+
+        this.props.updatedata({
+          id: eidd,
+          email: values.email,
+          password: values.password,
+        });
+
+        this.formRef.current?.resetFields();
+        this.setState({ Editbtn: true });
+        console.log("ififififif");
+      } else {
+        this.props.adddata(newdata, values.email, values.password);
+        this.formRef.current?.resetFields();
+        console.log("else ifif");
+      }
     };
     const onFinishFailed = (errorInfo) => {
       console.log("Failed:", errorInfo);
@@ -35,10 +50,11 @@ class Home extends Component {
         email: record.email,
         password: record.password,
       });
+      this.setState({ eid: record.id });
+      this.setState({ Editbtn: false });
     };
 
     const deletedata = (record) => {
-      console.log(record, "recoeds");
       this.props.removedata(record);
     };
     return (
@@ -60,8 +76,7 @@ class Home extends Component {
               }}
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
-              autoComplete="off"
-              Form={Form}
+              autoComplete="on"
             >
               <Form.Item
                 label="Email"
@@ -95,9 +110,15 @@ class Home extends Component {
                   span: 16,
                 }}
               >
-                <Button id="login-btn" type="primary" htmlType="submit">
-                  Submit
-                </Button>
+                {this.state.Editbtn ? (
+                  <Button id="login-btn" type="primary" htmlType="submit">
+                    Submit
+                  </Button>
+                ) : (
+                  <Button id="login-btn" type="primary" htmlType="submit">
+                    Edit
+                  </Button>
+                )}
               </Form.Item>
             </Form>
           </div>
@@ -110,11 +131,9 @@ class Home extends Component {
                 <Column
                   title="ACTION"
                   key="action"
-                  render={(record, a, i) => (
+                  render={(record) => (
                     <Space size="middle">
-                      <Button onClick={() => editdata(record, a, i)}>
-                        Edit
-                      </Button>
+                      <Button onClick={() => editdata(record)}>Edit</Button>
                       <Button onClick={() => deletedata(record)}>Delete</Button>
                     </Space>
                   )}
@@ -144,6 +163,10 @@ const mapDispatchToProps = (dispatch) => {
       ),
     removedata: (record) => {
       dispatch(removedata({ record }));
+    },
+    updatedata: (record) => {
+      console.log(record, "record updated");
+      dispatch(updatedata(record));
     },
   };
 };
