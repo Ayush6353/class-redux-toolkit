@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const SliceData = createSlice({
-  name: "formdata",
+  name: "users",
   initialState: [],
   reducers: {
     adddata(state, action) {
