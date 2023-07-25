@@ -11,3 +11,21 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.main{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 17rem;
+  width: 30rem;
+  border-radius: 1rem;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 6px 6px 8px 0px rgba(0, 0, 0, 0.158);
+}
+.antd_main{
+  margin-top: 2rem;
+}
+#login-btn {
+
+  width: 9rem;
+}
